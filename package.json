@@ -4,11 +4,16 @@
   "description": "A backend API for Dating Application",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "dev": "nodemon --delay 1.5 src/index.ts",
     "test": "jest --maxWorkers=50% --colors --verbose --detectOpenHandles",
     "test:unit": "jest --maxWorkers=50% --colors --verbose --detectOpenHandles --testMatch=**/*.spec.ts --bail",
     "test:infra": "jest --runInBand --colors --verbose --detectOpenHandles --testMatch=**/*.infra.ts",
-    "test:e2e": "jest --runInBand --colors --verbose --detectOpenHandles --testMatch=**/*.e2e.ts --bail"
+    "test:e2e": "jest --runInBand --colors --verbose --detectOpenHandles --testMatch=**/*.e2e.ts --bail",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check **/*.ts",
+    "prettier:fix": "prettier --write **/*.ts"
   },
   "repository": {
     "type": "git",

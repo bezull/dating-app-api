@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  dating-app-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dating-app-api
+    ports:
+      - '3000:3000'
+    environment:
+      - APP_NAME=dating-app-api
+      - APP_PORT=3000
+      - APP_ENV=development
+      - SQL_HOST=dating-app-sql-db
+      - SQL_DATABASE=dating-app
+      - SQL_USERNAME=root
+      - SQL_PASSWORD=asdqwe123
+      - SQL_PORT=3306
+      - SQL_DIALECT=mysql
+      - JWT_SECRET=thisisasecret
+      - JWT_EXPIRES_IN_MINUTES=60
+    networks:
+      - dating-app-network
+
+  dating-app-sql-db:
+    image: mysql
+    container_name: dating-app-sql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: asdqwe123
+      MYSQL_DATABASE: dating-app
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    networks:
+      - dating-app-network
+
+networks:
+  dating-app-network:
