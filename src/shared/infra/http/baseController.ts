@@ -23,7 +23,7 @@ export class BaseController {
   }
 
   // This method should be overridden by subclasses
-  protected async handleExecute(_req: Request, _res: Response) {
+  protected async handleExecute(_req: Request, _res: Response): Promise<Response> {
     throw new Error('Method should not implemented.')
   }
 }
