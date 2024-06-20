@@ -7,7 +7,7 @@ export class UserMap {
       userId: user.userId,
       email: user.email,
       name: user.name,
-      password: user.hashedPassword,
+      password: user.password,
     }
   }
 

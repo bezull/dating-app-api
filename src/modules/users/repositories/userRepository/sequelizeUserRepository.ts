@@ -1,4 +1,5 @@
 import { Result } from '../../../../shared/core/result/result'
+import { Maybe } from '../../../../shared/core/result/searchResult'
 import { SuccessOrFailure } from '../../../../shared/core/result/successOrFailureResult'
 import { UserModel } from '../../../../shared/infra/database/sequelize/models/user.model'
 import { User } from '../../domain/user'
@@ -30,6 +31,7 @@ export class SequelizeUserRepository implements UserRepository {
       .catch((err) => Result.fail(err))
       .then(() => Result.ok())
   }
+
   async isEmailAlreadyInUse(email: string): Promise<boolean> {
     return (
       (await UserModel.count({
@@ -38,6 +40,17 @@ export class SequelizeUserRepository implements UserRepository {
         },
       })) > 0
     )
+  }
+
+  async getUserByEmail(email: string): Promise<Maybe<User>> {
+    const sqlUser = await UserModel.findOne({
+      where: {
+        email: email,
+      },
+    })
+
+    if (!sqlUser) return Result.notFound('User not found by email')
+    return Result.found(UserMap.mapToDomain(sqlUser))
   }
 
   private mapQueryFilters(filters: UserFilters) {

@@ -8,7 +8,6 @@ type UserProps = {
   name: string
   email: string
   password: string
-  hashedPassword?: HashedPassword
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
@@ -39,8 +38,8 @@ export class User {
     return this.#props.password
   }
 
-  get hashedPassword() {
-    return this.#props.hashedPassword!.value!
+  async hashPassword() {
+    this.#props.password = (await HashedPassword.hash(this.#props.password)).getValue().value
   }
 
   static create(props: UserProps, id?: string): SuccessOrFailure<User> {
@@ -67,7 +66,6 @@ export class User {
       new User(
         {
           ...props,
-          hashedPassword: HashedPassword.create(props.password),
         },
         id,
       ),

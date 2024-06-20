@@ -3,7 +3,7 @@ import { defineFeature, loadFeature } from 'jest-cucumber'
 import { appConfig } from '../../../../config'
 import { User } from '../../../../modules/users/domain/user'
 import { userRepository } from '../../../../modules/users/repositories'
-import { SignUpUseCaseInputDTO } from '../../../../modules/users/useCases/signUp/signUpUseCaseDTO'
+import { SignUpUseCaseInputDTO } from '../../../../modules/users/useCases/signUp/signUpDTO'
 import { WebServer } from '../../../../shared/infra/http/webServer'
 import { infraSetupAndTeardown, startServer } from '../../../serverTestSetupAndTeardown'
 
@@ -50,7 +50,9 @@ defineFeature(feature, (test) => {
       try {
         response = await axios.post(`http://localhost:${appConfig.appEnv.port}/auth/sign-up`, signUpDto, {})
       } catch (err) {
-        response = err as AxiosResponse
+        if (err instanceof AxiosError) {
+          response = err.response as AxiosResponse
+        }
       }
     })
 
