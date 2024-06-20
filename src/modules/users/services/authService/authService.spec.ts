@@ -19,7 +19,7 @@ describe('AuthService', () => {
 
     const signedJWT = authService.signJWT(payload)
 
-    const decodedJWT = authService.decodeJWT(signedJWT)
+    const decodedJWT = authService.decodeJWT(signedJWT.token)
     expect(decodedJWT?.userId).toBe(payload.userId)
   })
 
@@ -30,7 +30,7 @@ describe('AuthService', () => {
 
     const signedJWT = authService.signJWT(payload)
 
-    const verifiedJWT = authService.verifyJWT(signedJWT)
+    const verifiedJWT = authService.verifyJWT(signedJWT.token)
     expect(verifiedJWT?.userId).toBe(payload.userId)
   })
 })
