@@ -3,8 +3,8 @@ import { Result } from '../../../../shared/core/result/result'
 import { SuccessOrFailure } from '../../../../shared/core/result/successOrFailureResult'
 import { User } from '../../domain/user'
 import { UserRepository } from '../../repositories/userRepository/userRepository'
-import { SignUpUseCaseInputDTO, SignUpUseCaseOutputDTO } from './signUpUseCaseDTO'
-import { DuplicateEmailError, SignUpUseCaseErrors } from './signUpUseCaseErrors'
+import { SignUpUseCaseInputDTO, SignUpUseCaseOutputDTO } from './signUpDTO'
+import { DuplicateEmailError, SignUpUseCaseErrors } from './signUpErrors'
 
 export class SignUpUseCase {
   #userRepository: UserRepository
@@ -31,7 +31,9 @@ export class SignUpUseCase {
       return Left.create(Result.fail('Error when creating user'))
     }
     const user = userOrError.getValue()
-    await this.#userRepository.save(userOrError.getValue())
+    await user.hashPassword()
+
+    await this.#userRepository.save(user)
 
     return Right.create(
       Result.ok({

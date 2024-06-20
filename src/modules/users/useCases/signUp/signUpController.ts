@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { BaseController } from '../../../../shared/infra/http/baseController'
 import { SendJSONResponse } from '../../../../shared/infra/http/jsonResponse'
+import { DuplicateEmailError } from './signUpErrors'
 import { SignUpUseCase } from './signUpUseCase'
-import { DuplicateEmailError } from './signUpUseCaseErrors'
 
 export class SignUpController extends BaseController {
   #useCase: SignUpUseCase
