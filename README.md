@@ -29,7 +29,11 @@ Running the service can be done in native or docker enviroment by leveraging doc
 
 ## Native
 
-To run in native mode, make sure to create and .env if haven't by copying key from .env.example. Adjust the value of .env such as port and SQL db endpoint. After that, run command
+To run in native mode, make sure to install npm packages by running command
+
+> npm run dev
+
+Then, make sure to copy ".env.example" file to ".env". Adjust the values such as SQL database connection. To run the service, use command
 
 > npm run dev
 
