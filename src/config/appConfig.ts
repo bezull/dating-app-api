@@ -16,6 +16,10 @@ type SqlEnv = {
   dialect: Dialect
 }
 
+type MongoEnv = {
+  uri: string
+}
+
 type JWTEnv = {
   secret: string
   expiresInMinutes: number
@@ -24,11 +28,13 @@ type JWTEnv = {
 export class AppConfiguration {
   #appEnv: AppEnv
   #sqlEnv: SqlEnv
+  #mongoEnv: MongoEnv
   #jwtEnv: JWTEnv
 
   constructor() {
     this.loadAppEnv()
     this.loadSqlEnv()
+    this.loadMongoEnv()
     this.loadJWTEnv()
   }
 
@@ -38,6 +44,10 @@ export class AppConfiguration {
 
   get sqlEnv() {
     return this.#sqlEnv
+  }
+
+  get mongoEnv() {
+    return this.#mongoEnv
   }
 
   get jwtEnv() {
@@ -73,6 +83,15 @@ export class AppConfiguration {
       username: SQL_USERNAME!,
       password: SQL_PASSWORD!,
       dialect: SQL_DIALECT! as Dialect,
+    }
+  }
+
+  private loadMongoEnv() {
+    const { MONGO_URI } = process.env
+    this.validateEnv(['MONGO_URI'])
+
+    this.#mongoEnv = {
+      uri: MONGO_URI!,
     }
   }
 

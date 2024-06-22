@@ -42,4 +42,10 @@ export class SequelizeConnection {
       throw new Error('Error Sequelize Connection')
     }
   }
+
+  async close() {
+    if (this.#sequelize) {
+      this.#sequelize.close()
+    }
+  }
 }
