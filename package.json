@@ -4,7 +4,7 @@
   "description": "A backend API for Dating Application",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node dist/src/index.js",
     "build": "tsc",
     "dev": "nodemon --delay 1.5 src/index.ts",
     "test": "jest --maxWorkers=50% --colors --verbose --detectOpenHandles",
