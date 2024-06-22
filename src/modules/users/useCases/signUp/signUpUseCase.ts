@@ -1,6 +1,7 @@
 import { Either, Left, Right } from '../../../../shared/core/result/either'
 import { Result } from '../../../../shared/core/result/result'
 import { SuccessOrFailure } from '../../../../shared/core/result/successOrFailureResult'
+import { createDatingProfileUseCase } from '../../../matches/useCases/createDatingProfile'
 import { User } from '../../domain/user'
 import { UserRepository } from '../../repositories/userRepository/userRepository'
 import { SignUpUseCaseInputDTO, SignUpUseCaseOutputDTO } from './signUpDTO'
@@ -34,6 +35,9 @@ export class SignUpUseCase {
     await user.hashPassword()
 
     await this.#userRepository.save(user)
+
+    // TODO: move this to domain event
+    await createDatingProfileUseCase.execute({ name: user.name, userId: user.userId })
 
     return Right.create(
       Result.ok({

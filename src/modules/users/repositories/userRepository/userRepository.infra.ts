@@ -56,4 +56,21 @@ describe('UserRepository', () => {
       }),
     )
   })
+
+  it('should able to get user by userId', async () => {
+    const fakeUser = User.create({
+      name: 'dzulfikar',
+      email: 'dzulfikar@gmail.com',
+      password: 'test123',
+    }).getValue()
+
+    await Promise.all(
+      repositories.map(async (repo) => {
+        await repo.save(fakeUser)
+        const user = await repo.getUserByUserId(fakeUser.userId)
+        expect(user.isFound).toBeTruthy()
+        expect(user.getValue().userId).toBe(fakeUser.userId)
+      }),
+    )
+  })
 })

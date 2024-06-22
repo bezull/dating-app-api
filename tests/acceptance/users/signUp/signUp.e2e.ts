@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import { appConfig } from '../../../../src/config'
+import { datingProfileRepository } from '../../../../src/modules/matches/repositories'
 import { User } from '../../../../src/modules/users/domain/user'
 import { userRepository } from '../../../../src/modules/users/repositories'
 import { SignUpUseCaseInputDTO } from '../../../../src/modules/users/useCases/signUp/signUpDTO'
@@ -37,7 +38,7 @@ defineFeature(feature, (test) => {
     server.stop()
   })
 
-  test('Successfully sign up user', ({ given, when, then }) => {
+  test('Successfully sign up user', ({ given, when, then, and }) => {
     given('email, name, and password', () => {
       signUpDto = {
         email: 'dzulfikar@gmail.com',
@@ -60,7 +61,14 @@ defineFeature(feature, (test) => {
       expect(response.status).toBe(HttpStatusCode.Ok)
       expect(response.data.data.email).toBe(signUpDto.email)
     })
+
+    and('Dating profile is created', async () => {
+      const datingProfile = await datingProfileRepository.getDatingProfileByUserId(response.data.data.id)
+      expect(datingProfile.isFound).toBe(true)
+      expect(datingProfile.getValue().name).toBe(signUpDto.name)
+    })
   })
+
   test('Error sign up user', ({ given, when, then }) => {
     given('duplicate email, name, and password', async () => {
       signUpDto = {

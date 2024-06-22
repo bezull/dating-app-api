@@ -61,7 +61,7 @@ export class User {
     if (guardResult.isFailure) {
       return Result.fail(guardResult.getErrorValue())
     }
-    //TODO: handle after user creation event
+
     return Result.ok(new User(props, id))
   }
 }

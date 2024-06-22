@@ -53,6 +53,17 @@ export class SequelizeUserRepository implements UserRepository {
     return Result.found(UserMap.mapToDomain(sqlUser))
   }
 
+  async getUserByUserId(userId: string): Promise<Maybe<User>> {
+    const sqlUser = await UserModel.findOne({
+      where: {
+        userId,
+      },
+    })
+
+    if (!sqlUser) return Result.notFound('User not found by userId')
+    return Result.found(UserMap.mapToDomain(sqlUser))
+  }
+
   private mapQueryFilters(filters: UserFilters) {
     return {
       ...(filters.email && { email: filters.email }),

@@ -31,4 +31,9 @@ export class InMemoryUserRepository implements UserRepository {
     if (!findUser) return Result.notFound('User not found.')
     return Result.found(findUser)
   }
+
+  async getUserByUserId(userId: string): Promise<Maybe<User>> {
+    const findUser = this.#users.find((user) => user.userId === userId)
+    return findUser ? Result.found(findUser) : Result.notFound('User not found')
+  }
 }

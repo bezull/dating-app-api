@@ -7,4 +7,5 @@ export interface UserRepository {
   saveBulk(users: User[]): Promise<SuccessOrFailure<void>>
   isEmailAlreadyInUse(email: string): Promise<boolean>
   getUserByEmail(email: string): Promise<Maybe<User>>
+  getUserByUserId(userId: string): Promise<Maybe<User>>
 }
