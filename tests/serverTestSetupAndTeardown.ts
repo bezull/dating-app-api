@@ -1,8 +1,13 @@
-import { sequelizeConnection } from '../shared/infra/database'
-import { WebServer } from '../shared/infra/http/webServer'
+import { mongooseConnection, sequelizeConnection } from '../src/shared/infra/database'
+import { WebServer } from '../src/shared/infra/http/webServer'
 
 const purgeDatabase = async () => {
   await sequelizeConnection.sequelize.sync({ force: true })
+  await Promise.all(
+    Object.values(mongooseConnection.mongoose.connection.collections).map(async (collection) =>
+      collection.deleteMany(),
+    ),
+  )
 }
 
 export const startServer = async (webServer: WebServer): Promise<WebServer> => {
@@ -31,6 +36,7 @@ export const stopServer = async (webServer: WebServer): Promise<WebServer> => {
 export const infraSetupAndTeardown = () => {
   beforeAll(async () => {
     await sequelizeConnection.connect()
+    await mongooseConnection.connect()
     await purgeDatabase()
   })
 
@@ -39,6 +45,7 @@ export const infraSetupAndTeardown = () => {
   })
 
   afterAll(async () => {
-    await sequelizeConnection.sequelize.close()
+    await sequelizeConnection.close()
+    await mongooseConnection.close()
   })
 }

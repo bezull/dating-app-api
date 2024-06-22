@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import { appConfig } from '../../../../config'
-import { User } from '../../../../modules/users/domain/user'
-import { userRepository } from '../../../../modules/users/repositories'
-import { SignUpUseCaseInputDTO } from '../../../../modules/users/useCases/signUp/signUpDTO'
-import { WebServer } from '../../../../shared/infra/http/webServer'
+import { appConfig } from '../../../../src/config'
+import { User } from '../../../../src/modules/users/domain/user'
+import { userRepository } from '../../../../src/modules/users/repositories'
+import { SignUpUseCaseInputDTO } from '../../../../src/modules/users/useCases/signUp/signUpDTO'
+import { WebServer } from '../../../../src/shared/infra/http/webServer'
 import { infraSetupAndTeardown, startServer } from '../../../serverTestSetupAndTeardown'
 
 const feature = loadFeature(__dirname + '/signUp.feature')
