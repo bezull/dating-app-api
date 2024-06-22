@@ -47,6 +47,10 @@ To run in docker environment, make sure is docker installed first then run comma
 
 This will create an all in one environtment consisting of the App itself and a MySQL service. The app can be accessed via port :3000
 
+# API Endpoints
+
+API routes are available in postman file "Dating App.postman_collection.json"
+
 # Tests
 
 ## Working Unit Testing

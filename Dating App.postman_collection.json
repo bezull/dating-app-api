@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "c68f0f10-9fb1-4d97-8f28-4392411556cc",
+		"name": "Dating App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26749946"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dzulfikar@gmail.com\",\n    \"name\": \"dzulfikar\",\n    \"password\": \"asdqwe123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:3000/auth/sign-up"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dzulfikar@gmail.com\",\n    \"password\": \"asdqwe123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "127.0.0.1:3000/auth/sign-in"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hello World",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "127.0.0.1:3000/"
+			},
+			"response": []
+		}
+	]
+}
