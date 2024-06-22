@@ -1,4 +1,4 @@
-import { infraSetupAndTeardown } from '../../../../tests/serverTestSetupAndTeardown'
+import { infraSetupAndTeardown } from '../../../../../tests/serverTestSetupAndTeardown'
 import { User } from '../../domain/user'
 import { InMemoryUserRepository } from './inMemoryUserRepository'
 import { SequelizeUserRepository } from './sequelizeUserRepository'
