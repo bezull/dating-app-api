@@ -34,6 +34,11 @@ export class SendJSONResponse {
 
   static forbidden(res: Response, message = 'Forbidden') {
     res.locals.errorMessage = message
+    return res.status(403).json(formatAPIRes(403, { message }))
+  }
+
+  static unauthorized(res: Response, message = 'Unauthorized') {
+    res.locals.errorMessage = message
     return res.status(401).json(formatAPIRes(401, { message }))
   }
 }
