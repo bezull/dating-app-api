@@ -17,6 +17,17 @@ export class InMemoryDatingProfileRepository implements DatingProfileRepository 
       : Result.notFound('Dating Profile by User Id not found')
   }
 
+  async getUninteractedDatingProfiles(
+    interactedDatingProfileIds: string[],
+    excludeDatingProfileId: string,
+  ): Promise<DatingProfile[]> {
+    return this.#inMemoryDatingProfiles.filter(
+      (inMemoryDatingProfile) =>
+        !interactedDatingProfileIds.includes(inMemoryDatingProfile.datingProfileId) &&
+        inMemoryDatingProfile.datingProfileId != excludeDatingProfileId,
+    )
+  }
+
   async save(datingProfile: DatingProfile): Promise<SuccessOrFailure<void>> {
     const existingIndex = this.#inMemoryDatingProfiles.findIndex(
       (iDatingProfile) => iDatingProfile.datingProfileId === datingProfile.datingProfileId,

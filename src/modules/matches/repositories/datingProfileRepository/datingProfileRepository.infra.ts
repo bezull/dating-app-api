@@ -36,4 +36,28 @@ describe('DatingProfileRepository', () => {
       }),
     )
   })
+
+  it('should able to get uninteracted dating profiles', async () => {
+    await Promise.all(
+      repositories.map(async (repo) => {
+        const datingProfiles = []
+        for (let index = 0; index < 10; index++) {
+          datingProfiles.push(
+            DatingProfile.create({
+              userId: uuidv4(),
+              name: 'John' + index,
+            }).getValue(),
+          )
+        }
+
+        await repo.saveBulk([fakeDatingProfile, ...datingProfiles])
+
+        const uninteractedDatingProfiles = await repo.getUninteractedDatingProfiles(
+          [fakeDatingProfile.datingProfileId],
+          fakeDatingProfile.datingProfileId,
+        )
+        expect(uninteractedDatingProfiles.length).toBe(10)
+      }),
+    )
+  })
 })

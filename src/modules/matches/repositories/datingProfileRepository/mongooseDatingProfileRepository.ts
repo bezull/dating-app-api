@@ -18,6 +18,16 @@ export class MongooseDatingProfileRepository implements DatingProfileRepository 
       : Result.notFound('Dating Profile by userId not found')
   }
 
+  async getUninteractedDatingProfiles(interactedDatingProfileIds: string[]): Promise<DatingProfile[]> {
+    const mongoDatingProfiles = await DatingProfileSchema.find({
+      dating_profile_id: {
+        $nin: interactedDatingProfileIds,
+      },
+    })
+
+    return mongoDatingProfiles.map((mongoDatingProfile) => DatingProfileMap.mapToDomain(mongoDatingProfile))
+  }
+
   async save(datingProfile: DatingProfile): Promise<SuccessOrFailure<void>> {
     try {
       const rawDatingProfile = DatingProfileMap.mapToPersistence(datingProfile)
