@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { discoverDatingProfilesController } from '../../../../modules/matches/useCases/discoverDatingProfiles'
 import { swipeLeftDatingProfileController } from '../../../../modules/matches/useCases/swipeLeftDatingProfile'
+import { swipeRightDatingProfileController } from '../../../../modules/matches/useCases/swipeRightDatingProfile'
 import { authMiddleware } from '../middlewares'
 
 export class MatchesRoute {
@@ -16,6 +17,11 @@ export class MatchesRoute {
       '/pass-dating-profile/:datingProfileId',
       (req, res, next) => authMiddleware.ensureAuthenticated(req, res, next),
       (req, res, next) => swipeLeftDatingProfileController.execute(req, res, next),
+    )
+    this.#router.post(
+      '/like-dating-profile/:datingProfileId',
+      (req, res, next) => authMiddleware.ensureAuthenticated(req, res, next),
+      (req, res, next) => swipeRightDatingProfileController.execute(req, res, next),
     )
   }
 

@@ -48,6 +48,10 @@ export class DatingProfile {
     this.#props.totalPass! += 1
   }
 
+  addLike(): void {
+    this.#props.totalLikes! += 1
+  }
+
   static create(props: DatingProfileProps, id?: string): SuccessOrFailure<DatingProfile> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       {
