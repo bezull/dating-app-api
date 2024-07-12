@@ -28,4 +28,53 @@ describe('DailyDatingProfileInteractionRepository', () => {
       }),
     )
   })
+
+  it('should able to get dating profile ids by daily dating profile id', async () => {
+    await Promise.all(
+      repositories.map(async (repo) => {
+        const dailyDatingProfileId = uuidv4()
+        const excludeDatingProfileId = uuidv4()
+
+        const dailyDatingProfileInteraction: DailyDatingProfileInteraction[] = [
+          DailyDatingProfileInteraction.create({
+            dailyDatingProfileId,
+            datingProfileId: uuidv4(),
+            isLiked: false,
+          }).getValue(),
+          DailyDatingProfileInteraction.create({
+            dailyDatingProfileId,
+            datingProfileId: excludeDatingProfileId,
+            isLiked: false,
+          }).getValue(),
+        ]
+
+        await repo.saveBulk(dailyDatingProfileInteraction)
+
+        const datingProfileIds = await repo.getDatingProfileIdsByDailyDatingProfileId(
+          dailyDatingProfileId,
+          excludeDatingProfileId,
+        )
+
+        expect(datingProfileIds.length).toBe(1)
+      }),
+    )
+  })
+
+  it('should able to check if dating profile is interacted', async () => {
+    await Promise.all(
+      repositories.map(async (repo) => {
+        const dailyDatingProfileId = uuidv4()
+        const datingProfileId = uuidv4()
+        const dailyDatingProfileInteraction: DailyDatingProfileInteraction = DailyDatingProfileInteraction.create({
+          dailyDatingProfileId,
+          datingProfileId,
+          isLiked: false,
+        }).getValue()
+
+        await repo.save(dailyDatingProfileInteraction)
+        const isDatingProfileInteracted = await repo.isDatingProfileInteracted(dailyDatingProfileId, datingProfileId)
+        expect(isDatingProfileInteracted).toBeTruthy()
+      }),
+    )
+  })
 })

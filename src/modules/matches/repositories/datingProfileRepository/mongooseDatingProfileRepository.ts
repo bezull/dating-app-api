@@ -5,9 +5,17 @@ import { DatingProfileSchema } from '../../../../shared/infra/database/mongoose/
 import { Logger } from '../../../../shared/infra/logger'
 import { DatingProfile } from '../../domain/datingProfile'
 import { DatingProfileMap } from '../../mappers/datingProfileMap'
-import { DatingProfileRepository } from './datingProfileRepository'
+import { DatingProfileFilter, DatingProfileRepository } from './datingProfileRepository'
 
 export class MongooseDatingProfileRepository implements DatingProfileRepository {
+  async getDatingProfileByFilter(filter: DatingProfileFilter): Promise<Maybe<DatingProfile>> {
+    const mongoDatingProfile = await DatingProfileSchema.findOne(this.mapQueryFilter(filter))
+    if (!mongoDatingProfile) {
+      return Result.notFound('Dating Profile not found')
+    }
+    return Result.found(DatingProfileMap.mapToDomain(mongoDatingProfile))
+  }
+
   async getDatingProfileByUserId(userId: string): Promise<Maybe<DatingProfile>> {
     const mongoDatingProfile = await DatingProfileSchema.findOne({
       user_id: userId,
@@ -52,5 +60,11 @@ export class MongooseDatingProfileRepository implements DatingProfileRepository 
     return Promise.all(datingProfiles.map(async (datingProfile) => this.save(datingProfile)))
       .catch((err) => Result.fail(err))
       .then(() => Result.ok())
+  }
+
+  private mapQueryFilter(filter: DatingProfileFilter) {
+    return {
+      ...(filter.datingProfileId ? { dating_profile_id: filter.datingProfileId } : {}),
+    }
   }
 }

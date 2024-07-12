@@ -8,4 +8,5 @@ export interface DailyDatingProfileInteractionRepository {
     dailyDatingProfileId: string,
     excludeDatingProfileId: string,
   ) => Promise<string[]>
+  isDatingProfileInteracted: (dailyDatingProfileId: string, datingProfileId: string) => Promise<boolean>
 }

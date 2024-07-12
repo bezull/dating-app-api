@@ -44,6 +44,10 @@ export class DatingProfile {
     return this.#props.totalPass!
   }
 
+  addPass(): void {
+    this.#props.totalPass! += 1
+  }
+
   static create(props: DatingProfileProps, id?: string): SuccessOrFailure<DatingProfile> {
     const guardResult = Guard.againstNullOrUndefinedBulk([
       {

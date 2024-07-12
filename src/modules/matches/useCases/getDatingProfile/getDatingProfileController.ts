@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { BaseController } from '../../../../shared/infra/http/baseController'
 import { SendJSONResponse } from '../../../../shared/infra/http/jsonResponse'
-import { DatingProfileNotFound, UserNotFound } from './getDatingProfileErrrors'
+import { DatingProfileNotFound, UserNotFound } from './getDatingProfileErrors'
 import { GetDatingProfileUseCase } from './getDatingProfileUseCase'
 
 export class GetDatingProfileController extends BaseController {

@@ -41,4 +41,12 @@ export class MongooseDailyDatingProfileInteractionRepository implements DailyDat
 
     return mongoDatas.map((data) => data.daily_dating_profile_id)
   }
+
+  async isDatingProfileInteracted(dailyDatingProfileId: string, datingProfileId: string): Promise<boolean> {
+    const mongoData = await DailyDatingProfileInteractionSchema.findOne({
+      daily_dating_profile_id: dailyDatingProfileId,
+      dating_profile_id: datingProfileId,
+    })
+    return !!mongoData
+  }
 }

@@ -1,6 +1,6 @@
 import { SuccessOrFailureResult } from '../../../../shared/core/result/successOrFailureResult'
 
-export class DuplicateDatingProfileError extends SuccessOrFailureResult<string> {
+export class DuplicateDatingProfileError extends SuccessOrFailureResult<object> {
   constructor() {
     super(false, 'Dating profile already exists')
   }

@@ -2,10 +2,19 @@ import { Result } from '../../../../shared/core/result/result'
 import { Maybe } from '../../../../shared/core/result/searchResult'
 import { SuccessOrFailure } from '../../../../shared/core/result/successOrFailureResult'
 import { DatingProfile } from '../../domain/datingProfile'
-import { DatingProfileRepository } from './datingProfileRepository'
+import { DatingProfileFilter, DatingProfileRepository } from './datingProfileRepository'
 
 export class InMemoryDatingProfileRepository implements DatingProfileRepository {
   #inMemoryDatingProfiles: DatingProfile[] = []
+
+  async getDatingProfileByFilter(filter: DatingProfileFilter): Promise<Maybe<DatingProfile>> {
+    const existingDatingProfile = this.#inMemoryDatingProfiles.find((inMemoryDatingProfile) =>
+      Object.entries(filter).every(
+        ([key, value]) => (inMemoryDatingProfile[key as keyof DatingProfile] as string) === value,
+      ),
+    )
+    return existingDatingProfile ? Result.found(existingDatingProfile) : Result.notFound('Dating Profile not found')
+  }
 
   async getDatingProfileByUserId(userId: string): Promise<Maybe<DatingProfile>> {
     const existingDatingProfile = this.#inMemoryDatingProfiles.find(

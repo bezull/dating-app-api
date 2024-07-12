@@ -42,4 +42,13 @@ export class InMemoryDailyDatingProfileInteractionRepository implements DailyDat
       )
       .map((data) => data.datingProfileId)
   }
+
+  async isDatingProfileInteracted(dailyDatingProfileId: string, datingProfileId: string): Promise<boolean> {
+    return this.#inMemoryDailyDatingProfileInteractions.find(
+      (inMemory) =>
+        inMemory.dailyDatingProfileId === dailyDatingProfileId && inMemory.datingProfileId === datingProfileId,
+    )
+      ? true
+      : false
+  }
 }

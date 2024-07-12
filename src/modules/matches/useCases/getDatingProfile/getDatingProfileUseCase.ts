@@ -5,7 +5,7 @@ import { UserRepository } from '../../../users/repositories/userRepository/userR
 import { DatingProfileMap } from '../../mappers/datingProfileMap'
 import { DatingProfileRepository } from '../../repositories/datingProfileRepository/datingProfileRepository'
 import { GetDatingProfileInputDTO, GetDatingProfileOutputDTO } from './getDatingProfileDTO'
-import { DatingProfileNotFound, GetDatingProfileErrors, UserNotFound } from './getDatingProfileErrrors'
+import { DatingProfileNotFound, GetDatingProfileErrors, UserNotFound } from './getDatingProfileErrors'
 
 export type GetDatingProfileOutput = Either<GetDatingProfileErrors, SuccessOrFailure<GetDatingProfileOutputDTO>>
 
