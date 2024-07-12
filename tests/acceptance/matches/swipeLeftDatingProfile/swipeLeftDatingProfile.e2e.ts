@@ -1,8 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import { appConfig } from '../../../../src/config'
+import { DailyDatingProfile } from '../../../../src/modules/matches/domain/dailyDatingProfile'
+import { DailyDatingProfileInteraction } from '../../../../src/modules/matches/domain/dailyDatingProfileInteraction'
 import { DatingProfile } from '../../../../src/modules/matches/domain/datingProfile'
-import { datingProfileRepository } from '../../../../src/modules/matches/repositories'
+import {
+  dailyDatingProfileInteractionRepository,
+  dailyDatingProfileRepository,
+  datingProfileRepository,
+} from '../../../../src/modules/matches/repositories'
 import { User } from '../../../../src/modules/users/domain/user'
 import { userRepository } from '../../../../src/modules/users/repositories'
 import { authService } from '../../../../src/modules/users/services'
@@ -50,7 +56,7 @@ defineFeature(feature, (test) => {
     server.stop()
   })
 
-  test.only('successfully swipe left dating profile', ({ given, when, then, and }) => {
+  test('successfully swipe left dating profile', ({ given, when, then, and }) => {
     given('seed new user and dating profile', async () => {
       await userRepository.saveBulk([fakeUserOne, fakeUserTwo])
       await datingProfileRepository.saveBulk([fakeUserOneDatingProfile, fakeUserTwoDatingProfile])
@@ -91,10 +97,48 @@ defineFeature(feature, (test) => {
     })
   })
   test('error swipe left dating profile due to already interacted today', ({ given, when, then }) => {
-    given('seed new user, dating profile, daily dating profile, and daily dating profile interaction', () => {})
+    given('seed new user, dating profile, daily dating profile, and daily dating profile interaction', async () => {
+      await userRepository.saveBulk([fakeUserOne, fakeUserTwo])
+      await datingProfileRepository.saveBulk([fakeUserOneDatingProfile, fakeUserTwoDatingProfile])
 
-    when('swipe left dating profile', () => {})
+      const dailyDatingProfile = DailyDatingProfile.create({
+        userId: fakeUserOne.userId,
+      }).getValue()
+      const dailyDatingProfileInteraction = DailyDatingProfileInteraction.create({
+        dailyDatingProfileId: dailyDatingProfile.dailyDatingProfileId,
+        datingProfileId: fakeUserTwoDatingProfile.datingProfileId,
+        isLiked: false,
+      }).getValue()
 
-    then('should return error swipe left dating profile due to already interacted today', () => {})
+      await dailyDatingProfileRepository.save(dailyDatingProfile)
+      await dailyDatingProfileInteractionRepository.save(dailyDatingProfileInteraction)
+    })
+
+    when('swipe left dating profile', async () => {
+      try {
+        response = await axios.post(
+          `http://localhost:${appConfig.appEnv.port}/matches/pass-dating-profile/${fakeUserTwoDatingProfile.datingProfileId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${
+                authService.signJWT({
+                  userId: fakeUserOne.userId,
+                }).token
+              }`,
+            },
+          },
+        )
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          response = error.response as AxiosResponse
+        }
+      }
+    })
+
+    then('should return error swipe left dating profile due to already interacted today', () => {
+      expect(response.status).toBe(400)
+      expect(response.data.data.message).toBe('Dating profile already interacted today')
+    })
   })
 })
