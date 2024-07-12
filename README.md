@@ -11,12 +11,12 @@ A backend API for Dating Application.
 1. Sign In
 2. Sign Up
 
-## Future And Work In Progress
-
 ### Matches Module
 
 1. Discover dating profiles
 2. Like & Pass dating profiles
+
+## Future And Work In Progress
 
 ### Subscription Module
 
@@ -62,6 +62,9 @@ Unit tests are created in \*.spec.ts files. To run it, use command
 1. Domain user
 2. Auth service
 3. Hashing password
+4. Discover dating profile
+5. Swipe left a dating profile
+6. Swipe right a dating profile
 
 ## Working Infra Testing
 
@@ -79,6 +82,8 @@ Unit tests are created in \*.e2e.ts files. To run it, use command
 
 1. Sign in feature end-to-end testing
 2. Sign up feature end-to-end testing
+3. Swipe left a dating profile end-to-end testing
+4. Swipe right a dating profile end-to-end testing
 
 # Add-on
 
