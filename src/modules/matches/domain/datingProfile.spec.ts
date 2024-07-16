@@ -10,4 +10,23 @@ describe(DatingProfile.name, () => {
 
     expect(datingProfileResult.isSuccess).toBeTruthy()
   })
+
+  it('should able to update dating profile name', () => {
+    const datingProfile = DatingProfile.create({
+      userId: uuidv4(),
+      name: 'Dzulfikar',
+    }).getValue()
+    datingProfile.updateName('Dzulfikar')
+    expect(datingProfile.name).toBe('Dzulfikar')
+  })
+
+  it('should able to update dating profile profile pic', () => {
+    const datingProfile = DatingProfile.create({
+      userId: uuidv4(),
+      name: 'Dzulfikar',
+      profilePicUrl: '',
+    }).getValue()
+    datingProfile.updateProfilePicUrl('https://picsum.photos/200')
+    expect(datingProfile.profilePicUrl).toBe('https://picsum.photos/200')
+  })
 })

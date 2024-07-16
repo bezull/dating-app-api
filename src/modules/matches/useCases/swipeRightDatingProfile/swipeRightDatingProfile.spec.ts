@@ -43,25 +43,25 @@ defineFeature(feature, (test) => {
 
   const fakeUserTwo = User.create({
     name: 'Fake User Two',
-    email: 'fakeuser@gmail.com',
+    email: 'fakeusertwo@gmail.com',
     password: 'password1',
   }).getValue()
 
   const fakeUserTwoDatingProfile = DatingProfile.create({
     name: 'Fake Two',
-    userId: fakeUserOne.userId,
+    userId: fakeUserTwo.userId,
   }).getValue()
 
   test('successfully swipe right dating profile', ({ given, when, then, and }) => {
     given('seed new user and dating profile', async () => {
-      await userRepo.save(fakeUserOne)
-      await datingProfileRepo.save(fakeUserOneDatingProfile)
+      await userRepo.saveBulk([fakeUserOne, fakeUserTwo])
+      await datingProfileRepo.saveBulk([fakeUserOneDatingProfile, fakeUserTwoDatingProfile])
     })
 
     when('swipe right dating profile', async () => {
       useCaseResult = await useCase.execute({
         userId: fakeUserOne.userId,
-        datingProfileId: fakeUserOneDatingProfile.datingProfileId,
+        datingProfileId: fakeUserTwoDatingProfile.datingProfileId,
       })
     })
 
@@ -71,7 +71,7 @@ defineFeature(feature, (test) => {
 
     and(/^dating profile total like increased by (.*)$/, async (increment: number) => {
       const datingProfileAfterSwipeLeft = (
-        await datingProfileRepo.getDatingProfileByUserId(fakeUserOne.userId)
+        await datingProfileRepo.getDatingProfileByUserId(fakeUserTwo.userId)
       ).getValue()
       expect(datingProfileAfterSwipeLeft.totalLikes).toBe(Number(increment))
     })

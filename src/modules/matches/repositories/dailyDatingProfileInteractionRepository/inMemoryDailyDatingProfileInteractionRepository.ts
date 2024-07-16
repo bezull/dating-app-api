@@ -51,4 +51,9 @@ export class InMemoryDailyDatingProfileInteractionRepository implements DailyDat
       ? true
       : false
   }
+
+  async delete(): Promise<SuccessOrFailure<void>> {
+    this.#inMemoryDailyDatingProfileInteractions.length = 0
+    return Result.ok()
+  }
 }

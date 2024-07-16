@@ -49,4 +49,13 @@ export class MongooseDailyDatingProfileInteractionRepository implements DailyDat
     })
     return !!mongoData
   }
+
+  async delete(): Promise<SuccessOrFailure<void>> {
+    try {
+      await DailyDatingProfileInteractionSchema.deleteMany({})
+      return Result.ok()
+    } catch (error) {
+      return Result.fail('Error when deleting daily dating profile interaction')
+    }
+  }
 }

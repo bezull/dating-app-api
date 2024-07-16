@@ -44,6 +44,14 @@ export class DatingProfile {
     return this.#props.totalPass!
   }
 
+  updateName(name: string): void {
+    this.#props.name = name
+  }
+
+  updateProfilePicUrl(profilePicUrl: string): void {
+    this.#props.profilePicUrl = profilePicUrl
+  }
+
   addPass(): void {
     this.#props.totalPass! += 1
   }

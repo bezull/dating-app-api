@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
+import { ObjectParser } from '../../utils/objectParser'
 import { Logger } from '../logger'
 import { SendJSONResponse } from './jsonResponse'
 
 export class BaseController {
   async execute(req: Request, res: Response, _next: NextFunction) {
-    // if (req.is('multipart/form-data')) {
-    //   req.body = ObjectParser.parseUnparsedObject(req.body)
-    // }
+    if (req.is('multipart/form-data')) {
+      req.body = ObjectParser.parseUnparsedObject(req.body)
+    }
 
     try {
       await this.handleExecute(req, res)

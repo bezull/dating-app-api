@@ -1,4 +1,4 @@
-import { UserAttributes, UserModel } from '../../../shared/infra/database/sequelize/models/user.model'
+import { UserAttributes } from '../../../shared/infra/database/sequelize/models/user.model'
 import { User } from '../domain/user'
 
 export class UserMap {
@@ -11,12 +11,14 @@ export class UserMap {
     }
   }
 
-  static mapToDomain(raw: UserModel): User {
+  static mapToDomain(raw: UserAttributes): User {
     return User.create(
       {
         name: raw.name,
         email: raw.email,
         password: raw.password,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
       },
       raw.userId,
     ).getValue()

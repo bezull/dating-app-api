@@ -5,6 +5,9 @@ export interface UserAttributes {
   email: string
   name: string
   password: string
+  createdAt?: Date
+  updatedAt?: Date
+  deletedAt?: Date
 }
 
 @Table({
@@ -18,23 +21,23 @@ export interface UserAttributes {
 export class UserModel extends Model<UserAttributes> {
   @PrimaryKey
   @Column
-  userId: string
+  declare userId: string
 
   @Column
-  email: string
+  declare email: string
 
   @Column
-  name: string
+  declare name: string
 
   @Column
-  password: string
+  declare password: string
 
   @CreatedAt
-  createdAt: Date
+  declare createdAt: Date
 
   @UpdatedAt
-  updatedAt: Date
+  declare updatedAt: Date
 
   @DeletedAt
-  deletedAt: Date
+  declare deletedAt: Date
 }
