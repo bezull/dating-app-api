@@ -6,13 +6,13 @@ pipeline {
     agent any
 
     parameters{
-        string(name: 'Branch', defaultValue: '', description: 'Branch to deploy')
-        choice(name: 'Server', choices: [script(sandboxServer.keySet())], description: 'Target deploy sandbox server')
+        string(name: 'BRANCH', defaultValue: '', description: 'Branch to deploy')
+        choice(name: 'SERVER', defaultValue: 'sandbox-1', choices: ["sandbox1"], description: 'Target deploy sandbox server')
     }
 
     environment {   
-        SANDBOX_SERVER = "$params.Branch"
-        SANDBOX_IP = script(sandboxServer.get("$params.Branch"))
+        SANDBOX_SERVER = "$params.BRANCH"
+        SANDBOX_IP = script(sandboxServer.get("$params.BRANCH"))
     }   
 
     stages {
