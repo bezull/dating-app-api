@@ -5,9 +5,9 @@ def sandboxServer = [
 pipeline {
     agent any
 
-    parameters{
+    parameters {
         string(name: 'BRANCH', defaultValue: '', description: 'Branch to deploy')
-        choice(name: 'SERVER', defaultValue: 'sandbox-1', choices: ["sandbox1"], description: 'Target deploy sandbox server')
+        choice(name: 'SERVER', choices: ["sandbox1"], description: 'Target deploy sandbox server')
     }
 
     environment {   
