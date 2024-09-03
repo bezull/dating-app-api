@@ -31,6 +31,7 @@ pipeline {
             steps {
                 script {
                     echo "Checkout SCM"
+                    echo "Branch: $env.TARGET_BRANCH"
                     checkout scmGit(branches: [[name: "*/${env.TARGET_BRANCH}"]], userRemoteConfigs: [[credentialsId: 'BezullGithub', url: 'https://github.com/bezull/dating-app-api.git']])
                 }
             }
@@ -48,18 +49,11 @@ pipeline {
                 script {
                     catchError {
                         docker.withRegistry("https://registry.hub.docker.com", 'BezullRegistry') {
-                            docker.build("$env.DOCKER_IMAGE_TAG")
+                            def dockerImg = docker.build("$env.DOCKER_IMAGE_TAG")
+                            stage('Publish Image') {
+                                dockerImg.push()
+                            }
                         }
-                    }
-                }
-            }
-        }
-        stage('Publish Image') {
-            steps {
-                script {
-                    catchError {
-                        def dockerImg = docker.image(env.DOCKER_IMAGE_TAG)
-                        dockerImg.push()
                     }
                 }
             }
@@ -70,6 +64,11 @@ pipeline {
         success {
             script {
                 echo 'success!'
+            }
+        }
+        failure {
+            script {
+                echo "fail :("
             }
         }
     }
