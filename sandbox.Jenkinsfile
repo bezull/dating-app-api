@@ -6,17 +6,19 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'BRANCH', defaultValue: '', description: 'Branch to deploy')
-        choice(name: 'SERVER', choices: ["sandbox1"], description: 'Target deploy sandbox server')
+        string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to deploy')
+        choice(name: 'SERVER', choices: ["sandbox-1"], description: 'Target deploy sandbox server')
     }
 
     environment {   
-        SANDBOX_SERVER = "$params.BRANCH"
-        SANDBOX_IP = script(sandboxServer.get("$params.BRANCH"))
+        SANDBOX_SERVER = "$params.SERVER"
+        SANDBOX_IP = sandboxServer.get(params.SERVER)
+        TARGET_BRANCH = "$params.BRANCH"
+        DOCKER_IMAGE_TAG = "bezull/dating-app-api:$env.SANDBOX_SERVER"
     }   
 
     stages {
-        stage('pre-condition') {
+        stage('Pre-condition') {
             steps {
                 script {
                     echo "Pre-Condition"
@@ -25,18 +27,49 @@ pipeline {
                 }
             }
         }
-        stage('checkout scm') {
+        stage('Checkout SCM') {
             steps {
                 script {
-                    sh("Checkout SCM")
+                    echo "Checkout SCM"
+                    checkout scmGit(branches: [[name: "*/${env.TARGET_BRANCH}"]], userRemoteConfigs: [[credentialsId: 'BezullGithub', url: 'https://github.com/bezull/dating-app-api.git']])
                 }
             }
         }
-        stage('build') {
-            steps{
+        stage('Docker Preparation') {
+            steps {
                 script {
-                    sh("Build Docker Image")
+                    echo "Preparation for Docker Image Build"
+                    echo "Docker Image Tag: $env.DOCKER_IMAGE_TAG"
                 }
+            }
+        }
+        stage('Building Image') {
+            steps {
+                script {
+                    catchError {
+                        docker.withRegistry("https://registry.hub.docker.com", 'BezullRegistry') {
+                            docker.build("$env.DOCKER_IMAGE_TAG")
+                        }
+                    }
+                }
+            }
+        }
+        stage('Publish Image') {
+            steps {
+                script {
+                    catchError {
+                        def dockerImg = docker.image(env.DOCKER_IMAGE_TAG)
+                        dockerImg.push()
+                    }
+                }
+            }
+        }
+    }
+
+    post{
+        success {
+            script {
+                echo 'success!'
             }
         }
     }
