@@ -1,6 +1,6 @@
 module.exports = [
   {
-    script: './dist/index.js',
+    script: './dist/src/index.js',
     name: 'dating-app-api',
     exec_mode: 'cluster',
     instances: 2,
