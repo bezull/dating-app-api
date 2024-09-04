@@ -1,4 +1,4 @@
-FROM node:22.3.0-alpine as build
+FROM node:22.3.0-alpine AS build
 
 RUN mkdir -p /home/node/src/node_modules && chown -R root:root /home/node/src
 
@@ -13,7 +13,7 @@ RUN npm install
 COPY --chown=root:root . .
 RUN npm run build
 
-FROM node:22.3.0-alpine as server
+FROM node:22.3.0-alpine AS server
 
 RUN mkdir -p /home/node/src/node_modules && chown -R root:root /home/node/src
 
