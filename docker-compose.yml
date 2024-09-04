@@ -1,4 +1,4 @@
-version: '3'
+name: 'dating-app-api'
 
 services:
   dating-app-api:

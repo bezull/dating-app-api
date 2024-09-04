@@ -1,0 +1,39 @@
+name: 'dating-app-api'
+
+services:
+  bezull-app-api:
+    image: bezull/dating-app-api:${IMAGE_TAG}
+    container_name: bezull-app-api
+    ports:
+      - '3000:3000'
+    environment:
+      - APP_NAME=bezull-app-api
+      - APP_PORT=3000
+      - APP_ENV=development
+      - SQL_HOST=bezull-app-sql-db
+      - SQL_DATABASE=bezull-app
+      - SQL_USERNAME=root
+      - SQL_PASSWORD=asdqwe123
+      - SQL_PORT=3306
+      - SQL_DIALECT=mysql
+      - JWT_SECRET=thisisasecret
+      - JWT_EXPIRES_IN_MINUTES=60
+    networks:
+      - bezull-app-network
+
+  bezull-app-sql-db:
+    image: mysql
+    container_name: bezull-app-sql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: asdqwe123
+      MYSQL_DATABASE: bezull-app
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    networks:
+      - bezull-app-network
+
+networks:
+  bezull-app-network:
