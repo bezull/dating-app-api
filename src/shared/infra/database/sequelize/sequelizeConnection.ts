@@ -1,5 +1,6 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { AppConfiguration } from '../../../../config/appConfig'
+import { Logger } from '../../logger'
 
 export class SequelizeConnection {
   #options: SequelizeOptions = {}
@@ -39,6 +40,7 @@ export class SequelizeConnection {
 
       if (this.#appConfiguration.appEnv.environtment !== 'test') await this.#sequelize.sync({ alter: true })
     } catch (err) {
+      Logger.error("Error connecting to sequelize", err)
       throw new Error('Error Sequelize Connection')
     }
   }
